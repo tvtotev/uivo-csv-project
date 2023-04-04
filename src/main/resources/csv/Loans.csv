@@ -1,0 +1,11 @@
+ID	Loan type	Loan originator	Score Class 	Guaranteed principal (%) 	Term 	Instalment type	Status	Interest rate (%) 	Available for investment	Discount / Premium (%)	Price	
+1	Business Loan	FastFinance	A	100 %	19 (5)	1 month	Current	10.50 %	200.00 EUR	0.0 %	200.00 EUR	
+2	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	5.54 EUR	0.0 %	5.54 EUR	
+3	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	10.00 EUR	0.0 %	10.00 EUR	
+4	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	10.00 EUR	0.0 %	10.00 EUR	
+5	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	9.30 EUR	0.0 %	9.30 EUR	
+6	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	10.00 EUR	0.0 %	10.00 EUR	
+7	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	8.91 EUR	0.0 %	8.91 EUR	
+8	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	10.00 EUR	0.0 %	10.00 EUR	
+9	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	9.69 EUR	0.0 %	9.69 EUR	
+10	Personal Loan	Axi Card Romania	A	100 %	3 (3)	1 month	Current	7.00 %	10.00 EUR	0.0 %	10.00 EUR	
