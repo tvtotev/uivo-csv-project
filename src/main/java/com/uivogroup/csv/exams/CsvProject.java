@@ -33,13 +33,48 @@ public class CsvProject {
      * Main method
      */
     public static void main(String[] args) throws Exception {
-        
+        boolean showUsage = false;
+        String rawCsvFile = null;
+        String separator = null;
+        int usecase = 0;
+        for (String arg : args) {
+            if (arg != null && arg.toLowerCase().startsWith("-file=")) {
+                rawCsvFile = arg.split("=")[1];
+            }
+            if (arg != null && arg.toLowerCase().startsWith("-separator=")) {
+                separator = arg.split("=")[1];
+            }
+            if (arg != null && arg.matches("^(0|1|2|3)$")) {
+                usecase = Integer.parseInt(arg);
+            }
+            if (arg != null && arg.equalsIgnoreCase("--help")) {
+                showUsage = true;
+            }
+        }
+        if (showUsage) {
+            System.out.println("Usage: ");
+            System.out.println("");
+            System.out.println("   Parameters: ");
+            System.out.println("      --help: Prints this guide");
+            System.out.println("      -file=<filelocation>: Specifies the CSV file location");
+            System.out.println("      -separator=<separator>: Specifies the CSV value separator char. Default is 'TAB' ");
+            System.out.println("");
+            System.out.println("   To print one of the following representations, add its number as application argument. To print all - skip this param or provide ");
+            System.out.println("");
+            System.out.println("   Example:   java -jar target/csv-project-0.1-SNAPSHOT-jar-with-dependencies.jar 1 ");
+            System.out.println("");
+            System.out.println("   1. Препоръчва инвестиция в кредита с най-висока доходност, при който минималната сума за инвестиция е 10 лв или евро и не е в закъснение");
+            System.out.println("   2. Сортира списъка по матуритет на кредитите спрямо оставащите брой вноски и типа им");
+            System.out.println("   3. Показва средната доходност на кредитите за всеки от оригинаторите");
+            System.exit(0);
+        }
         // Configure basic/console logger
         BasicConfigurator.configure();
-        
-        // Refactors the raw CSV file to a consistent temporary file 
-        String rawCsvFile = args.length > 0 ? args[0] : Paths.get("src/main/resources/csv", "Loans.csv").toString();
-        String separator = args.length > 1 ? args[1] : "\t";
+
+        rawCsvFile = rawCsvFile != null ? rawCsvFile : Paths.get("src/main/resources/csv", "Loans.csv").toString();
+        separator = separator != null ? separator : "\t";
+
+        // Refactors the raw CSV file to a consistent temporary file
         if (!Paths.get(rawCsvFile).toFile().exists()) {
             LOG.error("File " + rawCsvFile + " does not exists.");
             System.exit(-1);
@@ -49,18 +84,26 @@ public class CsvProject {
         Path allignedCsvFile = refactorRawCsvFile(rawCsvFile);
         try {
             SQLConnection.init(allignedCsvFile, separator);
-            // Всички записи
-            listAllRecords();
-            LOG.info("");
+            if (usecase == 0) {
+                // Всички записи
+                listAllRecords();
+                LOG.info("");
+            }
             // Препоръчва инвестиция в кредита с най-висока доходност, при който минималната сума за инвестиция е 10 лв
             // или евро и не е в закъснение
-            highestIncome();
-            LOG.info("");
+            if (usecase == 0 || usecase == 1) {
+                highestIncome();
+                LOG.info("");
+            }
             // Сортира списъка по матуритет на кредитите спрямо оставащите брой вноски и типа им
-            orderByMatureted();
-            LOG.info("");
-            // Показва средната доходност на кредитите за всеки от оригинаторите
-            avarageIncome();
+            if (usecase == 0 || usecase == 2) {
+                orderByMatureted();
+                LOG.info("");
+            }
+            if (usecase == 0 || usecase == 3) {
+                // Показва средната доходност на кредитите за всеки от оригинаторите
+                avarageIncome();
+            }
         } finally {
             Files.delete(allignedCsvFile);
         }
@@ -68,8 +111,7 @@ public class CsvProject {
 
     /*
      * Normalizing CSV raw format to a consistent table - transforming it to a temporary table with reformatted content:
-     * - splitting merged columns
-     * - removes extra data like currency signs, %, brackets, etc 
+     * - splitting merged columns - removes extra data like currency signs, %, brackets, etc
      */
     private static Path refactorRawCsvFile(String file) throws IOException {
         Path tmpFile = Files.createTempFile("uivoexam", ".csv");
